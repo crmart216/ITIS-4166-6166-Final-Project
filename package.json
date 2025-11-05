@@ -20,7 +20,9 @@
   "homepage": "https://github.com/crmart216/ITIS-4166-6166-Final-Project#readme",
   "dependencies": {
     "@prisma/client": "^6.18.0",
+    "bcrypt": "^6.0.0",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.16.3"
   },
   "devDependencies": {
