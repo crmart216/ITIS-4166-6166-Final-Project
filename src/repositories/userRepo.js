@@ -22,3 +22,16 @@ export async function createUser(data) {
     const newUser = await prisma.user.create({data: data});
     return newUser;
 }
+
+export async function updateUser(id, updates) {
+    try{
+        const updatedUser = await prisma.user.update({
+            where: { id },
+            data: updates,
+        });
+        return updatedUser;
+    } catch (error) {
+        if(error.code === 'P2025') return null;
+        throw error;
+    }
+}
