@@ -9,11 +9,21 @@ import {
     getUsers,
     findUsersByEmail,
     createUser,
+    findUserById,
+    findUserRecipesById,
 } from '../repositories/userRepo.js';
 
 
 export async function getAllUsers(filter) {
     return await getUsers(filter);
+}
+
+export async function getUserById(id) {
+  return await findUserById(id);
+}
+
+export async function getUserRecipesById(id) {
+    return await findUserRecipesById(id);
 }
 
 export async function userLogin(email, password) {
@@ -61,3 +71,4 @@ export async function userSignUp(email, password) {
         throw error;
     }
 }
+
