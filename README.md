@@ -8,7 +8,7 @@ Users can create, view, update, and delete their own recipes, while admins can m
 ## To-Do List
 
 - [ ] Set up project structure  
-- [ ] Configure database and Prisma ORM  
+- [X] Configure database and Prisma ORM  
 - [ ] Define User and Recipe models  
 - [ ] Implement user authentication  
 - [ ] Build CRUD endpoints for recipes  

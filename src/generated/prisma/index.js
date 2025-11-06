@@ -158,7 +158,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/rytim/Documents/GitHub/ITIS-4166-6166-Final-Project/src/generated/prisma",
+      "value": "D:\\Coding Projects\\school\\itis4166\\final\\ITIS-4166-6166-Final-Project\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
