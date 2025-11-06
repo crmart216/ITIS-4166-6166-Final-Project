@@ -28,6 +28,11 @@ export async function updateUser(id, updates) {
         const updatedUser = await prisma.user.update({
             where: { id },
             data: updates,
+            select: {
+                id: true,
+                email: true,
+                role: true,
+            }
         });
         return updatedUser;
     } catch (error) {

@@ -1,6 +1,7 @@
 import express from 'express';
 import {protectRoute} from '../middleware/authMiddleware.js';
-
+import { authorizeRoles } from '../middleware/authorizeRoles.js';
+import { validateUpdateUserRole } from '../middleware/validateUsers.js';
 import {
     getAllUsersHandler,
     userLoginHandler,
@@ -11,11 +12,11 @@ import {
 
 const router = express.Router();
 
-router.get('/', protectRoute, getAllUsersHandler);
+router.get('/', protectRoute, authorizeRoles('ADMIN'), getAllUsersHandler);
 router.post('/login', userLoginHandler);
 router.post('/signup', userSignUpHandler);
 router.post('/logout', userLogoutHandler);
-router.patch('/:id/role', protectRoute, updateOtherUserHandler)
+router.patch('/:id/role', protectRoute, authorizeRoles('ADMIN'), validateUpdateUserRole, updateOtherUserHandler)
 
 
 export default router;
