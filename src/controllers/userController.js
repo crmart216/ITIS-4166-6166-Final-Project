@@ -1,0 +1,43 @@
+import {
+    getAllUsers,
+    userLogin,
+    userSignUp,
+} from '../services/userService.js';
+
+import generateCookie from '../lib/generateCookie.js';
+
+export async function getAllUsersHandler(req, res) {
+    const result = await getAllUsers(req.query);
+    res.status(200).json(result);
+}
+
+export async function userLoginHandler(req, res) {
+    const {email, password} = req.body;
+    const {accessToken, user} = await userLogin(email, password);
+    generateCookie(accessToken, res);
+
+    res.status(200).json({
+        id : user.id,
+        email: user.email,
+        role: user.role
+    });
+}
+
+export async function userSignUpHandler(req, res) {
+    const {email, password} = req.body;
+
+    const {accessToken, newUser} = await userSignUp(email, password);
+    generateCookie(accessToken, res);
+
+    res.status(200).json({
+        message: 'New User Created',
+        id : newUser.id,
+        email: newUser.email,
+        role: newUser.role
+    });
+}
+
+export async function userLogoutHandler(_, res) {
+    res.cookie("jwt", "", {maxAge: 0});
+    res.status(200).json({message: "Logged out successfully"});
+}
