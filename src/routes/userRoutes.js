@@ -1,7 +1,10 @@
 import express from "express";
 import { protectRoute } from "../middleware/authMiddleware.js";
 import { authorizeRoles } from "../middleware/authorizeRoles.js";
-import { validateUpdateUserRole } from "../middleware/validateUsers.js";
+import {
+  validateUpdateUserRole,
+  validateUpdateSelf,
+} from "../middleware/validateUsers.js";
 import {
   getAllUsersHandler,
   userLoginHandler,
@@ -26,6 +29,6 @@ router.patch(
   updateOtherUserHandler
 );
 router.delete("/me", protectRoute, deleteMeHandler); //add authetnicate
-router.put("/me", protectRoute, updateMeHandler); //add authetnicate
+router.put("/me", protectRoute, validateUpdateSelf, updateMeHandler); //add authetnicate
 
 export default router;
