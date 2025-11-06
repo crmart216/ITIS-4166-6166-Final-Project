@@ -157,7 +157,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "D:\\Coding Projects\\school\\itis4166\\final\\ITIS-4166-6166-Final-Project\\src\\generated\\prisma",
+      "value": "/home/rytim/Documents/GitHub/ITIS-4166-6166-Final-Project/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -166,12 +166,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-1.1.x",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "D:\\Coding Projects\\school\\itis4166\\final\\ITIS-4166-6166-Final-Project\\prisma\\schema.prisma",
+    "sourceFilePath": "/home/rytim/Documents/GitHub/ITIS-4166-6166-Final-Project/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -185,7 +185,6 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
