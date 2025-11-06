@@ -1473,8 +1473,8 @@ export namespace Prisma {
     ingredients?: boolean
     steps?: boolean
     notes?: boolean
-    category?: boolean | Recipe_CategoryDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    category?: boolean | Recipe_CategoryDefaultArgs<ExtArgs>
     reviews?: boolean | Recipe$reviewsArgs<ExtArgs>
     _count?: boolean | RecipeCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["recipe"]>
@@ -1488,8 +1488,8 @@ export namespace Prisma {
     ingredients?: boolean
     steps?: boolean
     notes?: boolean
-    category?: boolean | Recipe_CategoryDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    category?: boolean | Recipe_CategoryDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["recipe"]>
 
   export type RecipeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1501,8 +1501,8 @@ export namespace Prisma {
     ingredients?: boolean
     steps?: boolean
     notes?: boolean
-    category?: boolean | Recipe_CategoryDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    category?: boolean | Recipe_CategoryDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["recipe"]>
 
   export type RecipeSelectScalar = {
@@ -1518,25 +1518,25 @@ export namespace Prisma {
 
   export type RecipeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "category_id" | "author_id" | "description" | "ingredients" | "steps" | "notes", ExtArgs["result"]["recipe"]>
   export type RecipeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    category?: boolean | Recipe_CategoryDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    category?: boolean | Recipe_CategoryDefaultArgs<ExtArgs>
     reviews?: boolean | Recipe$reviewsArgs<ExtArgs>
     _count?: boolean | RecipeCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RecipeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    category?: boolean | Recipe_CategoryDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    category?: boolean | Recipe_CategoryDefaultArgs<ExtArgs>
   }
   export type RecipeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    category?: boolean | Recipe_CategoryDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    category?: boolean | Recipe_CategoryDefaultArgs<ExtArgs>
   }
 
   export type $RecipePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Recipe"
     objects: {
-      category: Prisma.$Recipe_CategoryPayload<ExtArgs>
       author: Prisma.$UserPayload<ExtArgs>
+      category: Prisma.$Recipe_CategoryPayload<ExtArgs>
       reviews: Prisma.$ReviewPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -1942,8 +1942,8 @@ export namespace Prisma {
    */
   export interface Prisma__RecipeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    category<T extends Recipe_CategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, Recipe_CategoryDefaultArgs<ExtArgs>>): Prisma__Recipe_CategoryClient<$Result.GetResult<Prisma.$Recipe_CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    category<T extends Recipe_CategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, Recipe_CategoryDefaultArgs<ExtArgs>>): Prisma__Recipe_CategoryClient<$Result.GetResult<Prisma.$Recipe_CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     reviews<T extends Recipe$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, Recipe$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -5801,8 +5801,8 @@ export namespace Prisma {
     ingredients?: StringFilter<"Recipe"> | string
     steps?: StringFilter<"Recipe"> | string
     notes?: StringNullableFilter<"Recipe"> | string | null
-    category?: XOR<Recipe_CategoryScalarRelationFilter, Recipe_CategoryWhereInput>
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    category?: XOR<Recipe_CategoryScalarRelationFilter, Recipe_CategoryWhereInput>
     reviews?: ReviewListRelationFilter
   }
 
@@ -5815,8 +5815,8 @@ export namespace Prisma {
     ingredients?: SortOrder
     steps?: SortOrder
     notes?: SortOrderInput | SortOrder
-    category?: Recipe_CategoryOrderByWithRelationInput
     author?: UserOrderByWithRelationInput
+    category?: Recipe_CategoryOrderByWithRelationInput
     reviews?: ReviewOrderByRelationAggregateInput
   }
 
@@ -5832,8 +5832,8 @@ export namespace Prisma {
     ingredients?: StringFilter<"Recipe"> | string
     steps?: StringFilter<"Recipe"> | string
     notes?: StringNullableFilter<"Recipe"> | string | null
-    category?: XOR<Recipe_CategoryScalarRelationFilter, Recipe_CategoryWhereInput>
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    category?: XOR<Recipe_CategoryScalarRelationFilter, Recipe_CategoryWhereInput>
     reviews?: ReviewListRelationFilter
   }, "id" | "title">
 
@@ -6014,8 +6014,8 @@ export namespace Prisma {
     ingredients: string
     steps: string
     notes?: string | null
-    category: Recipe_CategoryCreateNestedOneWithoutRecipesInput
     author: UserCreateNestedOneWithoutRecipesInput
+    category: Recipe_CategoryCreateNestedOneWithoutRecipesInput
     reviews?: ReviewCreateNestedManyWithoutRecipeInput
   }
 
@@ -6037,8 +6037,8 @@ export namespace Prisma {
     ingredients?: StringFieldUpdateOperationsInput | string
     steps?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    category?: Recipe_CategoryUpdateOneRequiredWithoutRecipesNestedInput
     author?: UserUpdateOneRequiredWithoutRecipesNestedInput
+    category?: Recipe_CategoryUpdateOneRequiredWithoutRecipesNestedInput
     reviews?: ReviewUpdateManyWithoutRecipeNestedInput
   }
 
@@ -6249,14 +6249,14 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type Recipe_CategoryScalarRelationFilter = {
-    is?: Recipe_CategoryWhereInput
-    isNot?: Recipe_CategoryWhereInput
-  }
-
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
+  }
+
+  export type Recipe_CategoryScalarRelationFilter = {
+    is?: Recipe_CategoryWhereInput
+    isNot?: Recipe_CategoryWhereInput
   }
 
   export type ReviewListRelationFilter = {
@@ -6483,16 +6483,16 @@ export namespace Prisma {
     _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
-  export type Recipe_CategoryCreateNestedOneWithoutRecipesInput = {
-    create?: XOR<Recipe_CategoryCreateWithoutRecipesInput, Recipe_CategoryUncheckedCreateWithoutRecipesInput>
-    connectOrCreate?: Recipe_CategoryCreateOrConnectWithoutRecipesInput
-    connect?: Recipe_CategoryWhereUniqueInput
-  }
-
   export type UserCreateNestedOneWithoutRecipesInput = {
     create?: XOR<UserCreateWithoutRecipesInput, UserUncheckedCreateWithoutRecipesInput>
     connectOrCreate?: UserCreateOrConnectWithoutRecipesInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type Recipe_CategoryCreateNestedOneWithoutRecipesInput = {
+    create?: XOR<Recipe_CategoryCreateWithoutRecipesInput, Recipe_CategoryUncheckedCreateWithoutRecipesInput>
+    connectOrCreate?: Recipe_CategoryCreateOrConnectWithoutRecipesInput
+    connect?: Recipe_CategoryWhereUniqueInput
   }
 
   export type ReviewCreateNestedManyWithoutRecipeInput = {
@@ -6517,20 +6517,20 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type Recipe_CategoryUpdateOneRequiredWithoutRecipesNestedInput = {
-    create?: XOR<Recipe_CategoryCreateWithoutRecipesInput, Recipe_CategoryUncheckedCreateWithoutRecipesInput>
-    connectOrCreate?: Recipe_CategoryCreateOrConnectWithoutRecipesInput
-    upsert?: Recipe_CategoryUpsertWithoutRecipesInput
-    connect?: Recipe_CategoryWhereUniqueInput
-    update?: XOR<XOR<Recipe_CategoryUpdateToOneWithWhereWithoutRecipesInput, Recipe_CategoryUpdateWithoutRecipesInput>, Recipe_CategoryUncheckedUpdateWithoutRecipesInput>
-  }
-
   export type UserUpdateOneRequiredWithoutRecipesNestedInput = {
     create?: XOR<UserCreateWithoutRecipesInput, UserUncheckedCreateWithoutRecipesInput>
     connectOrCreate?: UserCreateOrConnectWithoutRecipesInput
     upsert?: UserUpsertWithoutRecipesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRecipesInput, UserUpdateWithoutRecipesInput>, UserUncheckedUpdateWithoutRecipesInput>
+  }
+
+  export type Recipe_CategoryUpdateOneRequiredWithoutRecipesNestedInput = {
+    create?: XOR<Recipe_CategoryCreateWithoutRecipesInput, Recipe_CategoryUncheckedCreateWithoutRecipesInput>
+    connectOrCreate?: Recipe_CategoryCreateOrConnectWithoutRecipesInput
+    upsert?: Recipe_CategoryUpsertWithoutRecipesInput
+    connect?: Recipe_CategoryWhereUniqueInput
+    update?: XOR<XOR<Recipe_CategoryUpdateToOneWithWhereWithoutRecipesInput, Recipe_CategoryUpdateWithoutRecipesInput>, Recipe_CategoryUncheckedUpdateWithoutRecipesInput>
   }
 
   export type ReviewUpdateManyWithoutRecipeNestedInput = {
@@ -6799,20 +6799,6 @@ export namespace Prisma {
     _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
-  export type Recipe_CategoryCreateWithoutRecipesInput = {
-    name: string
-  }
-
-  export type Recipe_CategoryUncheckedCreateWithoutRecipesInput = {
-    id?: number
-    name: string
-  }
-
-  export type Recipe_CategoryCreateOrConnectWithoutRecipesInput = {
-    where: Recipe_CategoryWhereUniqueInput
-    create: XOR<Recipe_CategoryCreateWithoutRecipesInput, Recipe_CategoryUncheckedCreateWithoutRecipesInput>
-  }
-
   export type UserCreateWithoutRecipesInput = {
     email: string
     password: string
@@ -6829,6 +6815,20 @@ export namespace Prisma {
   export type UserCreateOrConnectWithoutRecipesInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutRecipesInput, UserUncheckedCreateWithoutRecipesInput>
+  }
+
+  export type Recipe_CategoryCreateWithoutRecipesInput = {
+    name: string
+  }
+
+  export type Recipe_CategoryUncheckedCreateWithoutRecipesInput = {
+    id?: number
+    name: string
+  }
+
+  export type Recipe_CategoryCreateOrConnectWithoutRecipesInput = {
+    where: Recipe_CategoryWhereUniqueInput
+    create: XOR<Recipe_CategoryCreateWithoutRecipesInput, Recipe_CategoryUncheckedCreateWithoutRecipesInput>
   }
 
   export type ReviewCreateWithoutRecipeInput = {
@@ -6848,26 +6848,6 @@ export namespace Prisma {
   export type ReviewCreateManyRecipeInputEnvelope = {
     data: ReviewCreateManyRecipeInput | ReviewCreateManyRecipeInput[]
     skipDuplicates?: boolean
-  }
-
-  export type Recipe_CategoryUpsertWithoutRecipesInput = {
-    update: XOR<Recipe_CategoryUpdateWithoutRecipesInput, Recipe_CategoryUncheckedUpdateWithoutRecipesInput>
-    create: XOR<Recipe_CategoryCreateWithoutRecipesInput, Recipe_CategoryUncheckedCreateWithoutRecipesInput>
-    where?: Recipe_CategoryWhereInput
-  }
-
-  export type Recipe_CategoryUpdateToOneWithWhereWithoutRecipesInput = {
-    where?: Recipe_CategoryWhereInput
-    data: XOR<Recipe_CategoryUpdateWithoutRecipesInput, Recipe_CategoryUncheckedUpdateWithoutRecipesInput>
-  }
-
-  export type Recipe_CategoryUpdateWithoutRecipesInput = {
-    name?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type Recipe_CategoryUncheckedUpdateWithoutRecipesInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserUpsertWithoutRecipesInput = {
@@ -6892,6 +6872,26 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  }
+
+  export type Recipe_CategoryUpsertWithoutRecipesInput = {
+    update: XOR<Recipe_CategoryUpdateWithoutRecipesInput, Recipe_CategoryUncheckedUpdateWithoutRecipesInput>
+    create: XOR<Recipe_CategoryCreateWithoutRecipesInput, Recipe_CategoryUncheckedCreateWithoutRecipesInput>
+    where?: Recipe_CategoryWhereInput
+  }
+
+  export type Recipe_CategoryUpdateToOneWithWhereWithoutRecipesInput = {
+    where?: Recipe_CategoryWhereInput
+    data: XOR<Recipe_CategoryUpdateWithoutRecipesInput, Recipe_CategoryUncheckedUpdateWithoutRecipesInput>
+  }
+
+  export type Recipe_CategoryUpdateWithoutRecipesInput = {
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type Recipe_CategoryUncheckedUpdateWithoutRecipesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
   }
 
   export type ReviewUpsertWithWhereUniqueWithoutRecipeInput = {
@@ -6986,8 +6986,8 @@ export namespace Prisma {
     ingredients: string
     steps: string
     notes?: string | null
-    category: Recipe_CategoryCreateNestedOneWithoutRecipesInput
     author: UserCreateNestedOneWithoutRecipesInput
+    category: Recipe_CategoryCreateNestedOneWithoutRecipesInput
   }
 
   export type RecipeUncheckedCreateWithoutReviewsInput = {
@@ -7023,8 +7023,8 @@ export namespace Prisma {
     ingredients?: StringFieldUpdateOperationsInput | string
     steps?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    category?: Recipe_CategoryUpdateOneRequiredWithoutRecipesNestedInput
     author?: UserUpdateOneRequiredWithoutRecipesNestedInput
+    category?: Recipe_CategoryUpdateOneRequiredWithoutRecipesNestedInput
   }
 
   export type RecipeUncheckedUpdateWithoutReviewsInput = {
