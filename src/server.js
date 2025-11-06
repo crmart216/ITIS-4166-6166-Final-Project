@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import userRoutes from './routes/userRoutes.js';
 import cookieParser from 'cookie-parser';
@@ -11,7 +14,7 @@ if(process.env.NODE_ENV === 'development') {
 }
 
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
 /* Inlcude routes here */
 
 app.use('/users', userRoutes);
