@@ -9,6 +9,7 @@ import {
     getUsers,
     findUsersByEmail,
     createUser,
+    updateUser,
 } from '../repositories/userRepo.js';
 
 
@@ -58,6 +59,16 @@ export async function userSignUp(email, password) {
             }
             throw error;
         }
+        throw error;
+    }
+}
+
+export async function updateOtherUser(id, updates){
+    const updatedUser = await updateUser(id, updates);
+    if(updatedUser) return updatedUser;
+    else {
+        const error = new Error (`Cannot find user with id ${id}`);
+        error.status = 404;
         throw error;
     }
 }

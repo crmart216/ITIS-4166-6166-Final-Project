@@ -2,6 +2,7 @@ import {
     getAllUsers,
     userLogin,
     userSignUp,
+    updateOtherUser,
 } from '../services/userService.js';
 
 import generateCookie from '../lib/generateCookie.js';
@@ -40,4 +41,13 @@ export async function userSignUpHandler(req, res) {
 export async function userLogoutHandler(_, res) {
     res.cookie("jwt", "", {maxAge: 0});
     res.status(200).json({message: "Logged out successfully"});
+}
+
+export async function updateOtherUserHandler(req, res){
+    let id = parseInt(req.params.id);
+    const updates = {};
+    updates.role = req.body.role;
+    console.log(req.params);
+    const updatedUser = await updateOtherUser(id, updates);
+    res.status(200).json(updatedUser);
 }
