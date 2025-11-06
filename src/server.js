@@ -1,5 +1,6 @@
 import express from 'express';
-
+import userRoutes from './routes/userRoutes.js';
+import cookieParser from 'cookie-parser';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -8,11 +9,12 @@ if(process.env.NODE_ENV === 'development') {
     const morgan = morganModule.default;
     app.use(morgan('tiny'));
 }
-app.use(express.json());
 
+app.use(express.json());
+app.use(cookieParser())
 /* Inlcude routes here */
 
-
+app.use('/users', userRoutes);
 
 /* Basic error handling*/
 app.use((req, res, next) => {

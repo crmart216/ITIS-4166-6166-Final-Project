@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import prisma from './config/db.js';
+import prisma from './db.js';
 
 try {
 
@@ -8,15 +8,18 @@ try {
     const userData = [
         {
             email: 'diskid@example.com',
-            password: await bcrypt.hash('diskid1234', 10)
+            password: await bcrypt.hash('diskid1234', 10),
+            role: 'ADMIN'
         },
         {
             email: 'datkid@example.com',
-            password: await bcrypt.hash('datkid1234', 10)
+            password: await bcrypt.hash('datkid1234', 10),
+            role: 'USER'
         },
         {
             email: 'anotherkid@example.com',
-            password: await bcrypt.hash('anotherkid1234', 10)
+            password: await bcrypt.hash('anotherkid1234', 10),
+            role: 'USER'
         }
     ]
 
@@ -26,7 +29,7 @@ try {
 
     // TODO: seed recipe's here
 
-
+    console.log('seed successful');
 } catch (error) {
     console.error('Seed failed: ', error);
 } finally {
