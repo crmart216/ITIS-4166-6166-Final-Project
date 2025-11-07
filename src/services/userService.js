@@ -9,11 +9,22 @@ import {
     getUsers,
     findUsersByEmail,
     createUser,
+    updateUser,
+    findUserById,
+    findUserRecipesById,
 } from '../repositories/userRepo.js';
 
 
 export async function getAllUsers(filter) {
     return await getUsers(filter);
+}
+
+export async function getUserById(id) {
+  return await findUserById(id);
+}
+
+export async function getUserRecipesById(id) {
+    return await findUserRecipesById(id);
 }
 
 export async function userLogin(email, password) {
@@ -58,6 +69,16 @@ export async function userSignUp(email, password) {
             }
             throw error;
         }
+        throw error;
+    }
+}
+
+export async function updateOtherUser(id, updates){
+    const updatedUser = await updateUser(id, updates);
+    if(updatedUser) return updatedUser;
+    else {
+        const error = new Error (`Cannot find user with id ${id}`);
+        error.status = 404;
         throw error;
     }
 }

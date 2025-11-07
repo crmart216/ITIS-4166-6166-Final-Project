@@ -20,15 +20,16 @@
   },
   "homepage": "https://github.com/crmart216/ITIS-4166-6166-Final-Project#readme",
   "dependencies": {
-    "@prisma/client": "^6.18.0",
+    "@prisma/client": "^6.19.0",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "express": "^5.1.0",
+    "express-validator": "^7.3.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.16.3"
   },
   "devDependencies": {
     "morgan": "^1.10.1",
-    "prisma": "^6.18.0"
+    "prisma": "^6.19.0"
   }
 }
