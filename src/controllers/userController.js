@@ -38,6 +38,26 @@ export async function getUserRecipesByIdHandler(req, res, next) {
   }
 }
 
+export async function getCurrentUserHandler(req, res, next) {
+  try {
+    const userId = req.user.id; 
+    const user = await getUserById(userId); 
+    res.status(200).json(user);
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function getUserRecipesByIdHandler(req, res, next) {
+  try {
+    const userId = req.params.id; 
+    const recipes = await getUserRecipesById(userId);
+    res.status(200).json(recipes);
+  } catch (err) {
+    next(err);
+  }
+}
+
 export async function userLoginHandler(req, res) {
   const { email, password } = req.body;
   const { accessToken, user } = await userLogin(email, password);

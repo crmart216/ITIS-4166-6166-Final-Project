@@ -27,6 +27,14 @@ export async function getUserRecipesById(id) {
   return await findUserRecipesById(id);
 }
 
+export async function getUserById(id) {
+  return await findUserById(id);
+}
+
+export async function getUserRecipesById(id) {
+    return await findUserRecipesById(id);
+}
+
 export async function userLogin(email, password) {
   const user = await findUsersByEmail(email);
 
@@ -76,6 +84,15 @@ export async function userSignUp(email, password) {
     throw error;
   }
 }
+export async function deleteUser(id){
+    const result = await removeUser(id);
+    if(result) return;
+    else {
+        const error = new Error(`Cannot find user with id ${id}`);
+        error.status = 404;
+        throw error;
+    }
+} 
 
 export async function deleteUser(id) {
   const result = await removeUser(id);
