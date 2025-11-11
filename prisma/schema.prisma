@@ -32,13 +32,14 @@ model Recipe_Category {
   @@map("recipe_categories")
 }
 
-model Review{
-  id Int @id @default(autoincrement())
-  content String
-  author User @relation(fields: [author_id], references: [id], onDelete: Cascade)
+model Review {
+  id        Int    @id @default(autoincrement())
+  content   String
   author_id Int
-  recipe Recipe @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
   recipe_id Int
+
+  author    User   @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  recipe    Recipe @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
 
   @@map("reviews")
 }
@@ -47,9 +48,11 @@ model User {
   id       Int      @id @default(autoincrement())
   email    String   @unique
   password String
-  role Role @default(USER)  
-  reviews Review[]
-  recipes Recipe[]
+  role     Role     @default(USER)
+
+  recipes  Recipe[]
+  reviews  Review[]
+
   @@map("users")
 }
 

@@ -13,14 +13,21 @@ import {
   updateOtherUserHandler,
   updateMeHandler,
   deleteMeHandler,
+  deleteOtherUserHandler,
+  getCurrentUserHandler,
+  getUserRecipesByIdHandler,
 } from "../controllers/userController.js";
 
 const router = express.Router();
 
 router.get("/", protectRoute, authorizeRoles("ADMIN"), getAllUsersHandler);
+router.get("/me", protectRoute, getCurrentUserHandler);
+router.get("/:id/recipes", protectRoute, getUserRecipesByIdHandler);
+
 router.post("/login", userLoginHandler);
 router.post("/signup", userSignUpHandler);
 router.post("/logout", userLogoutHandler);
+
 router.patch(
   "/:id/role",
   protectRoute,
@@ -28,7 +35,14 @@ router.patch(
   validateUpdateUserRole,
   updateOtherUserHandler
 );
-router.delete("/me", protectRoute, deleteMeHandler); //add authetnicate
-router.put("/me", protectRoute, validateUpdateSelf, updateMeHandler); //add authetnicate
+
+router.delete(
+  "/:id",
+  protectRoute,
+  authorizeRoles("ADMIN"),
+  deleteOtherUserHandler
+);
+router.delete("/me", protectRoute, deleteMeHandler);
+router.put("/me", protectRoute, validateUpdateSelf, updateMeHandler);
 
 export default router;

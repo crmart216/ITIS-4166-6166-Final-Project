@@ -10,11 +10,21 @@ import {
   findUsersByEmail,
   createUser,
   updateUser,
-  deleteUser,
+  removeUser,
+  findUserById,
+  findUserRecipesById,
 } from "../repositories/userRepo.js";
 
 export async function getAllUsers(filter) {
   return await getUsers(filter);
+}
+
+export async function getUserById(id) {
+  return await findUserById(id);
+}
+
+export async function getUserRecipesById(id) {
+  return await findUserRecipesById(id);
 }
 
 export async function userLogin(email, password) {
@@ -25,8 +35,8 @@ export async function userLogin(email, password) {
     error.status = 401;
     throw error;
   }
-  const isMatch = await bcrypt.compare(password, user.password);
 
+  const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
     const error = new Error("Invalid credentials");
     error.status = 401;
@@ -56,13 +66,23 @@ export async function userSignUp(email, password) {
     return { accessToken, newUser };
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      if ((error.code = "P2002")) {
-        const error = new Error("Email has already been used");
-        error.status = 409;
-        throw error;
+      if (error.code === "P2002") {
+        const e = new Error("Email has already been used");
+        e.status = 409;
+        throw e;
       }
       throw error;
     }
+    throw error;
+  }
+}
+
+export async function deleteUser(id) {
+  const result = await removeUser(id);
+  if (result) return;
+  else {
+    const error = new Error(`Cannot find user with id ${id}`);
+    error.status = 404;
     throw error;
   }
 }
