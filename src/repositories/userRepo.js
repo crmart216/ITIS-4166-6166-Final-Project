@@ -37,6 +37,18 @@ export async function createUser(data) {
     return newUser;
 }
 
+export async function removeUser(id) {
+  try {
+    const deletedUser = await prisma.user.delete({
+      where: { id },
+    });
+    return deletedUser;
+  } catch (error) {
+    if (error.code === 'P2025') return null;
+    throw error;
+  }
+}
+
 export async function updateUser(id, updates) {
     try{
         const updatedUser = await prisma.user.update({

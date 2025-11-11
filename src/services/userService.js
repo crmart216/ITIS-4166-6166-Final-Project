@@ -10,6 +10,7 @@ import {
     findUsersByEmail,
     createUser,
     updateUser,
+    removeUser,
     findUserById,
     findUserRecipesById,
 } from '../repositories/userRepo.js';
@@ -72,6 +73,15 @@ export async function userSignUp(email, password) {
         throw error;
     }
 }
+export async function deleteUser(id){
+    const result = await removeUser(id);
+    if(result) return;
+    else {
+        const error = new Error(`Cannot find user with id ${id}`);
+        error.status = 404;
+        throw error;
+    }
+} 
 
 export async function updateOtherUser(id, updates){
     const updatedUser = await updateUser(id, updates);
