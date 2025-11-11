@@ -5,6 +5,7 @@ import {
     getUserById,
     getUserRecipesById,
     updateOtherUser,
+    deleteUser,
 } from '../services/userService.js';
 
 import generateCookie from '../lib/generateCookie.js';
@@ -69,7 +70,12 @@ export async function updateOtherUserHandler(req, res){
     let id = parseInt(req.params.id);
     const updates = {};
     updates.role = req.body.role;
-    console.log(req.params);
     const updatedUser = await updateOtherUser(id, updates);
     res.status(200).json(updatedUser);
+}
+
+export async function deleteOtherUserHandler(req, res){
+  let id = parseInt(req.params.id);
+  await deleteUser(id);
+  res.status(204).send();
 }
