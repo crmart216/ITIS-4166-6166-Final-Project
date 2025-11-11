@@ -41,6 +41,8 @@ model Recipe_Category {
 model Review {
   id        Int    @id @default(autoincrement())
   content   String
+  author    User   @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author_id Int
   recipe    Recipe @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
   recipe_id Int
 
@@ -52,6 +54,7 @@ model User {
   email    String   @unique
   password String
   role     Role     @default(USER)
+  reviews  Review[]
   recipes  Recipe[]
 
   @@map("users")

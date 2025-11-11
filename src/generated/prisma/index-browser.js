@@ -140,6 +140,7 @@ exports.Prisma.Recipe_CategoryScalarFieldEnum = {
 exports.Prisma.ReviewScalarFieldEnum = {
   id: 'id',
   content: 'content',
+  author_id: 'author_id',
   recipe_id: 'recipe_id'
 };
 
