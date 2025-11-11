@@ -19,7 +19,7 @@ router.get('/', protectRoute, authorizeRoles('ADMIN'), getAllUsersHandler);
 
 router.get('/me', protectRoute, getCurrentUserHandler);
 
-router.get('/recipes/:id', protectRoute, getUserRecipesByIdHandler);
+router.get('/:id/recipes', protectRoute, getUserRecipesByIdHandler);
 
 router.post('/login', userLoginHandler);
 
