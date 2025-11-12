@@ -1,5 +1,7 @@
 node_modules
 .env
-/generated/prisma
+src/generated/prisma/*
+src/generated/*
+prisma/migrations/
 package-lock.json
 .vscode/
