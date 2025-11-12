@@ -20,26 +20,6 @@ export async function getAllUsersHandler(req, res) {
 
 export async function getCurrentUserHandler(req, res, next) {
   try {
-    const userId = req.user.id;
-    const user = await getUserById(userId);
-    res.status(200).json(user);
-  } catch (err) {
-    next(err);
-  }
-}
-
-export async function getUserRecipesByIdHandler(req, res, next) {
-  try {
-    const userId = req.params.id;
-    const recipes = await getUserRecipesById(userId);
-    res.status(200).json(recipes);
-  } catch (err) {
-    next(err);
-  }
-}
-
-export async function getCurrentUserHandler(req, res, next) {
-  try {
     const userId = req.user.id; 
     const user = await getUserById(userId); 
     res.status(200).json(user);
