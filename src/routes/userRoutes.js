@@ -21,28 +21,25 @@ import {
 const router = express.Router();
 
 router.get("/", protectRoute, authorizeRoles("ADMIN"), getAllUsersHandler);
+
 router.get("/me", protectRoute, getCurrentUserHandler);
+
 router.get("/:id/recipes", protectRoute, getUserRecipesByIdHandler);
 
+router.delete("/me", protectRoute, deleteMeHandler);
+
+router.put("/me", protectRoute, validateUpdateSelf, updateMeHandler);
+
+router.patch("/:id/role", protectRoute, authorizeRoles("ADMIN"), validateUpdateUserRole, updateOtherUserHandler);
+
+router.delete("/:id", protectRoute, authorizeRoles("ADMIN"), deleteOtherUserHandler);
+
 router.post("/login", userLoginHandler);
+
 router.post("/signup", userSignUpHandler);
+
 router.post("/logout", userLogoutHandler);
 
-router.patch(
-  "/:id/role",
-  protectRoute,
-  authorizeRoles("ADMIN"),
-  validateUpdateUserRole,
-  updateOtherUserHandler
-);
 
-router.delete(
-  "/:id",
-  protectRoute,
-  authorizeRoles("ADMIN"),
-  deleteOtherUserHandler
-);
-router.delete("/me", protectRoute, deleteMeHandler);
-router.put("/me", protectRoute, validateUpdateSelf, updateMeHandler);
 
 export default router;
