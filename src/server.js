@@ -4,6 +4,7 @@ dotenv.config();
 import express from 'express';
 import userRoutes from './routes/userRoutes.js';
 import recipeCategoryRoutes from './routes/recipeCategoryRoutes.js';
+import reviewRoutes from './routes/reviewRoutes.js';
 import cookieParser from 'cookie-parser';
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,6 +21,7 @@ app.use(cookieParser());
 
 app.use('/users', userRoutes);
 app.use('/recipeCategories', recipeCategoryRoutes);
+app.use('/reviews', reviewRoutes);
 
 /* Basic error handling*/
 app.use((req, res, next) => {
