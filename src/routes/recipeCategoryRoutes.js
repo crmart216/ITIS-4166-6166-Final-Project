@@ -11,8 +11,8 @@ const router = express.Router();
 
 router.post('/', protectRoute, createRecipeCategoryHandler);
 
-router.put('/:id', protectRoute, updateRecipeCategoryHandler);
+router.put('/:id', protectRoute, authorizeRoles('ADMIN'), updateRecipeCategoryHandler);
 
-router.delete('/:id', protectRoute, deleteRecipeCategoryHandler);
+router.delete('/:id', protectRoute, authorizeRoles('ADMIN'), deleteRecipeCategoryHandler);
 
 export default router;
