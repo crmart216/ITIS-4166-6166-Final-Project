@@ -3,6 +3,7 @@ import {
     getRecipeById,
     getRecipeReview,
     createRecipe,
+    deleteRecipe,
 } from "../services/recipeService.js";
 
 export async function getAllRecipesHandler(req, res) {
@@ -29,10 +30,29 @@ export async function createRecipeHandler(req, res) {
     res.status(201).json(newRecipe);
 }
 
-export async function deleteRecipeHandler(req, res) {
+export async function deleteRecipeHandler(req, res, next) {
+    try {
+        const id = req.params.id;
+        const result = await deleteRecipe(id);
 
+        // if deleteRecipe returns a message object, treat as error
+        if (result && result.message) {
+        return res.status(400).json(result);
+        }
+
+        // success, no content
+        return res.sendStatus(204);
+    } catch (err) {
+        // handle "record not found" from Prisma
+        if (err.code === "P2025") {
+        return res.status(404).json({ error: "Recipe not found" });
+        }
+
+        // let your error middleware handle anything else
+        return next(err);
+    }
 }
 
 export async function updateRecipeHandler(req, res) {
 
-}
+}   

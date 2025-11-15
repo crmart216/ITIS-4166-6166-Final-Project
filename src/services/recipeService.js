@@ -2,6 +2,7 @@ import {
     getAll,
     getById,
     create,
+    remove, 
 } from "../repositories/recipeRepo.js";
 
 export async function getAllRecipes() {
@@ -71,8 +72,15 @@ export async function createRecipe(title, description, ingredients, steps, notes
 
 }
 
-export async function deleteRecipe() {
-
+export async function deleteRecipe(id) {
+    if (!id) {
+        return {message: "id is required"}
+    }
+    const intId = parseInt(id);
+    if (!Number.isInteger(intId)) {
+        return {message: "id must be an integer"}
+    }
+    return await remove(intId);
 }
 
 export async function updateRecipe() {

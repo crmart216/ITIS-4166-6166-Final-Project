@@ -1,7 +1,7 @@
 import prisma from "../config/db.js";
 
 export async function getAll() {
-    const recipes = await prisma.recipe.findMany({orderBy: {title: "asc"}});
+    const recipes = await prisma.recipe.findMany({orderBy: {id: "asc"}});
     return recipes;
 }
 
@@ -15,8 +15,9 @@ export async function create(data) {
     return newRecipe;
 }
 
-export async function remove() {
-
+export async function remove(id) {
+    const removed = await prisma.recipe.delete({where: {id: id}});
+    return removed;
 }
 
 export async function update() {
