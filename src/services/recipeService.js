@@ -50,7 +50,7 @@ export async function createRecipe(title, description, ingredients, steps, notes
     reviews     Review[]
     */
 
-    if (!(title && description && ingredients && steps && notes)){
+    if (!(title && ingredients && steps)){
         return {
             error: "All fields are required",
             example: {
