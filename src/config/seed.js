@@ -6,6 +6,8 @@ try {
     await prisma.user.deleteMany();
     await prisma.recipe.deleteMany();
     await prisma.recipe_Category.deleteMany();
+    await prisma.review.deleteMany();
+
 
     //seeded users
     const userData = [
@@ -72,9 +74,43 @@ try {
         }
     ];
 
-    await Promise.all(
+    const recipes = await Promise.all(
         recipeData.map((recipe) => prisma.recipe.create({ data: recipe }))
     );
+
+    // Seeded reviews
+    const reviewData = [
+        {
+            content: "These pancakes were super fluffy and delicious!",
+            author_id: users[1].id,
+            recipe_id: recipes[0].id
+        },
+        {
+            content: "Perfect weekend breakfast. Added blueberries!",
+            author_id: users[2].id,
+            recipe_id: recipes[0].id
+        },
+        {
+            content: "Steak came out juicy and flavorful. Will make again.",
+            author_id: users[0].id,
+            recipe_id: recipes[1].id
+        },
+        {
+            content: "Loved how simple this cookie recipe was.",
+            author_id: users[1].id,
+            recipe_id: recipes[2].id
+        },
+        {
+            content: "Soft, chewy, and perfect with milk!",
+            author_id: users[0].id,
+            recipe_id: recipes[2].id
+        }
+    ];
+
+    await Promise.all(
+        reviewData.map(review => prisma.review.create({ data: review }))
+    );
+
 
     console.log('seed successful');
 } catch (error) {
