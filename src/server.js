@@ -25,7 +25,7 @@ app.use('/recipes', recipeRoutes);
 
 /* Basic error handling*/
 app.use((req, res, next) => {
-    const err = new Error('Not Found');
+    const err = new Error('Route Not Found');
     err.status = 404;
     next(err);
 });

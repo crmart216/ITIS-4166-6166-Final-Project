@@ -2,7 +2,8 @@ import {
     getAll,
     getById,
     create,
-    remove, 
+    remove,
+    update, 
 } from "../repositories/recipeRepo.js";
 
 export async function getAllRecipes() {
@@ -11,28 +12,26 @@ export async function getAllRecipes() {
 
 export async function getRecipeById(id) {
     if (!id) {
-        throw new Error("id is required");
+        return {error: "Id is required"};
     }
     const idRet = parseInt(id);
     if (!Number.isInteger(idRet)) {
-        throw new Error("id must be number");
+        return {error: "Id must be an integer"};
     }
     return await getById(idRet);
 }
 
 export async function getRecipeReview(id) {
     if (!id) {
-        throw new Error("id is required");
+        return {error: "Id is required"};
     }
     const idRet = parseInt(id);
     if (!Number.isInteger(idRet)) {
-        throw new Error("id must be number");
+        return {error: "Id must be an integer"};
     }
     const recipe = await getById(idRet);
     const review = recipe.reviews;
-    if (!review) {
-        return {message: "No reviews to display"};
-    }
+    
     return review;
 }
 
@@ -51,7 +50,18 @@ export async function createRecipe(title, description, ingredients, steps, notes
     reviews     Review[]
     */
 
-    console.log(user.id);
+    if (!(title && description && ingredients && steps && notes)){
+        return {
+            error: "All fields are required",
+            example: {
+                title : "Bread",
+                description: "Bread",
+                ingredients: "Flour, Water, Yeaste, Milk, Salt, Sugar",
+                steps: "Lol bread",
+                notes: "I don't know how to make bread"
+            }
+        };
+    }
 
     const data = {
         title,
@@ -74,15 +84,40 @@ export async function createRecipe(title, description, ingredients, steps, notes
 
 export async function deleteRecipe(id) {
     if (!id) {
-        return {message: "id is required"}
+        return {error: "id is required"};
     }
     const intId = parseInt(id);
     if (!Number.isInteger(intId)) {
-        return {message: "id must be an integer"}
+        return {error: "id must be an integer"};
     }
     return await remove(intId);
 }
 
-export async function updateRecipe() {
+export async function updateRecipe(title, description, ingredients, steps, notes, user, id) {4
     
+    if (!(title || description || ingredients || steps || notes)){
+        return {error: "At least one field is required"};
+    }
+    
+    const data = {
+        title,
+        //author_id: user.id,
+        description,
+        ingredients,
+        steps,
+        notes,
+        author: {
+            connect: {id: user.id}
+        }
+    }
+    
+    if (!id) {
+        return {error: "id is required"};
+    }
+    const intId = parseInt(id);
+    if (!Number.isInteger(intId)) {
+        return {error: "id must be an integer"};
+    }
+    const result = await update(data, intId);
+    return result;
 }

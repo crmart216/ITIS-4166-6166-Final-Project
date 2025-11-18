@@ -20,6 +20,12 @@ export async function remove(id) {
     return removed;
 }
 
-export async function update() {
-
+export async function update(data, id) {
+    const updatedRecipe = await prisma.recipe.update({where:
+        {
+            id: id
+        },
+        data: data
+    })
+    return updatedRecipe;
 }
