@@ -2,9 +2,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express from 'express';
+
 import userRoutes from './routes/userRoutes.js';
 import recipeCategoryRoutes from './routes/recipeCategoryRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
+import recipeRoutes from './routes/recipeRoutes.js';
+
 import cookieParser from 'cookie-parser';
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,10 +25,11 @@ app.use(cookieParser());
 app.use('/users', userRoutes);
 app.use('/recipeCategories', recipeCategoryRoutes);
 app.use('/reviews', reviewRoutes);
+app.use('/recipes', recipeRoutes);
 
 /* Basic error handling*/
 app.use((req, res, next) => {
-    const err = new Error('Not Found');
+    const err = new Error('Route Not Found');
     err.status = 404;
     next(err);
 });
