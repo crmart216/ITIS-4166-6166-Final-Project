@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === "development") {
   const morgan = morganModule.default;
   app.use(morgan("tiny"));
 }
-
+ 
 app.use(express.json());
 app.use(cookieParser());
 /* Inlcude routes here */
