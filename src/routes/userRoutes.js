@@ -43,7 +43,7 @@ router.patch(
   "/:id/role",
   protectRoute,
   authorizeRoles("ADMIN"),
-  validateIdParam,
+  validateIdParam(),
   validateUpdateUserRole,
   updateOtherUserHandler
 );
@@ -52,7 +52,7 @@ router.delete(
   "/:id",
   protectRoute,
   authorizeRoles("ADMIN"),
-  validateIdParam,
+  validateIdParam(),
   deleteOtherUserHandler
 );
 
