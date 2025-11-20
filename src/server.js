@@ -2,8 +2,12 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
+
 import userRoutes from "./routes/userRoutes.js";
 import recipeCategoryRoutes from "./routes/recipeCategoryRoutes.js";
+import reviewRoutes from "./routes/reviewRoutes.js";
+import recipeRoutes from "./routes/recipeRoutes.js";
+
 import cookieParser from "cookie-parser";
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,19 +22,14 @@ app.use(express.json());
 app.use(cookieParser());
 /* Inlcude routes here */
 
-/* 
-function used to show route requests in console for testing/ uncomment if needed
-app.use((req, res, next) => {
-  console.log("Incoming request:", req.method, req.path);
-  next();
-});
-*/
 app.use("/users", userRoutes);
-app.use("/recipe_categories", recipeCategoryRoutes);
+app.use("/recipeCategories", recipeCategoryRoutes);
+app.use("/reviews", reviewRoutes);
+app.use("/recipes", recipeRoutes);
 
 /* Basic error handling*/
 app.use((req, res, next) => {
-  const err = new Error("Not Found");
+  const err = new Error("Route Not Found");
   err.status = 404;
   next(err);
 });
