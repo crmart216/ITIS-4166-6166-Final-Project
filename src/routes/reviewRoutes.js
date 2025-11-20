@@ -24,7 +24,7 @@ router.post("/", protectRoute, validateCreateReview, createReviewHandler);
 router.put(
   "/:id",
   protectRoute,
-  authorizeOwnership,
+  authorizeOwnership("review"),
   validateIdParam(),
   validateUpdateReview,
   updateReviewHandler
@@ -32,7 +32,7 @@ router.put(
 router.delete(
   "/:id",
   protectRoute,
-  authorizeOwnership,
+  authorizeOwnership("review"),
   validateIdParam(),
   deletePostHandler
 );

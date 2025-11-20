@@ -4,9 +4,9 @@ import { authorizeRoles } from "../middleware/authorizeRoles.js";
 import { validateIdParam } from "../middleware/validateID.js";
 import { authorizeOwnership } from "../middleware/authorizeOwnership.js";
 import {
-  validateCreateReview,
-  validateUpdateReview,
-} from "../middleware/validateReviews.js";
+  validateCreateRecipe,
+  validateUpdateRecipe,
+} from "../middleware/validateRecipes.js";
 
 import {
   getAllRecipesHandler,
@@ -27,20 +27,20 @@ router.get(
   validateIdParam(),
   getRecipeReviewHandler
 ); // get review about a recipe
-router.post("/", protectRoute, validateCreateReview, createRecipeHandler); // create recipe
+router.post("/", protectRoute, validateCreateRecipe, createRecipeHandler); // create recipe
 router.delete(
   "/:id",
   protectRoute,
-  authorizeOwnership,
+  authorizeOwnership("recipe"),
   validateIdParam(),
   deleteRecipeHandler
 ); // delete recipe
 router.put(
   "/:id",
   protectRoute,
-  authorizeOwnership,
+  authorizeOwnership("recipe"),
   validateIdParam(),
-  validateUpdateReview,
+  validateUpdateRecipe,
   updateRecipeHandler
 ); // update recipe
 
