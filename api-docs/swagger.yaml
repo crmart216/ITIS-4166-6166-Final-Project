@@ -1,0 +1,366 @@
+openapi: 3.0.3
+info:
+  title: Recipe API
+  version: 1.0.0
+  description: API for managing recipes and their reviews.
+
+servers:
+  - url: http://localhost:3000
+    description: Local development
+
+tags:
+  - name: Recipes
+    description: Operations related to recipes
+
+paths:
+  /recipes:
+    get:
+      tags: [Recipes]
+      summary: Get all recipes
+      operationId: getAllRecipes
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: List of recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Recipe"
+
+    post:
+      tags: [Recipes]
+      summary: Create a new recipe
+      operationId: createRecipe
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecipeCreate"
+            examples:
+              valid:
+                summary: Valid recipe
+                value:
+                  title: "Bread"
+                  description: "Simple homemade bread"
+                  ingredients: "Flour, Water, Yeast, Milk, Salt, Sugar"
+                  steps: "Mix ingredients, knead, proof, bake"
+                  notes: "I don't know how to make bread"
+      responses:
+        "201":
+          description: Recipe created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Recipe"
+        "400":
+          description: Validation error (missing required fields)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWithExample"
+              example:
+                error: "All fields are required"
+                example:
+                  title: "Bread"
+                  description: "Bread"
+                  ingredients: "Flour, Water, Yeaste, Milk, Salt, Sugar"
+                  steps: "Lol bread"
+                  notes: "I don't know how to make bread"
+        "401":
+          description: Unauthorized (missing or invalid token)
+        "404":
+          description: A recipe with this name already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: "A recipe with this name already exists"
+
+  /recipes/{id}:
+    get:
+      tags: [Recipes]
+      summary: Get a recipe by ID
+      operationId: getRecipeById
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the recipe
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Recipe found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Recipe"
+        "400":
+          description: Invalid ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                missingId:
+                  summary: Missing ID
+                  value:
+                    error: "Id is required"
+                invalidId:
+                  summary: Non-integer ID
+                  value:
+                    error: "Id must be an integer"
+        "404":
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: "Recipe not found"
+
+    put:
+      tags: [Recipes]
+      summary: Update an existing recipe
+      operationId: updateRecipe
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the recipe to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecipeUpdate"
+      responses:
+        "201":
+          description: Recipe updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Recipe"
+        "400":
+          description: Validation error (no fields provided or invalid ID)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                noFields:
+                  summary: No fields provided
+                  value:
+                    error: "At least one field is required"
+                missingId:
+                  summary: Missing ID
+                  value:
+                    error: "id is required"
+                invalidId:
+                  summary: Non-integer ID
+                  value:
+                    error: "id must be an integer"
+        "401":
+          description: Unauthorized (missing or invalid token)
+        "404":
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: "Recipe not found"
+
+    delete:
+      tags: [Recipes]
+      summary: Delete a recipe
+      operationId: deleteRecipe
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the recipe to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Recipe deleted successfully (no content)
+        "400":
+          description: Invalid ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                missingId:
+                  summary: Missing ID
+                  value:
+                    error: "id is required"
+                invalidId:
+                  summary: Non-integer ID
+                  value:
+                    error: "id must be an integer"
+        "401":
+          description: Unauthorized (missing or invalid token)
+        "404":
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: "Recipe not found"
+
+  /recipes/{id}/reviews:
+    get:
+      tags: [Recipes]
+      summary: Get reviews for a recipe
+      operationId: getRecipeReview
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of the recipe
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Reviews for the recipe
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Review"
+        "400":
+          description: Invalid ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                missingId:
+                  summary: Missing ID
+                  value:
+                    error: "Id is required"
+                invalidId:
+                  summary: Non-integer ID
+                  value:
+                    error: "Id must be an integer"
+        "404":
+          description: No reviews to display
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: "No reviews to display"
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: jwt
+
+  schemas:
+    Recipe:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "Bread"
+        description:
+          type: string
+          nullable: true
+          example: "Simple homemade bread"
+        ingredients:
+          type: string
+          example: "Flour, Water, Yeast, Milk, Salt, Sugar"
+        steps:
+          type: string
+          example: "Mix ingredients, knead, proof, bake"
+        notes:
+          type: string
+          nullable: true
+          example: "Best served warm"
+      required:
+        - id
+        - title
+        - ingredients
+        - steps
+
+    RecipeCreate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        ingredients:
+          type: string
+        steps:
+          type: string
+        notes:
+          type: string
+      required:
+        - title
+        - ingredients
+        - steps
+
+    RecipeUpdate:
+      type: object
+      description: At least one field is required.
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        ingredients:
+          type: string
+        steps:
+          type: string
+        notes:
+          type: string
+
+    Review:
+      type: object
+      description: Review object as returned by the database.
+      additionalProperties: true
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    ErrorResponseWithExample:
+      allOf:
+        - $ref: "#/components/schemas/ErrorResponse"
+        - type: object
+          properties:
+            example:
+              type: object
+              description: Example payload showing correct request format.
