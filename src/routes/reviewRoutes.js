@@ -4,6 +4,10 @@ import { authorizeRoles } from "../middleware/authorizeRoles.js";
 import { authorizeOwnership } from "../middleware/authorizeOwnership.js";
 import { validateIdParam } from "../middleware/validateID.js";
 import {
+  validateCreateReview,
+  validateUpdateReview,
+} from "../middleware/validateReviews.js";
+import {
   getAllReviewsHandler,
   getReviewByIdHandler,
   createReviewHandler,
@@ -16,12 +20,13 @@ const router = express.Router();
 
 router.get("/", protectRoute, getAllReviewsHandler);
 router.get("/:id", protectRoute, validateIdParam(), getReviewByIdHandler);
-router.post("/", protectRoute, createReviewHandler);
+router.post("/", protectRoute, validateCreateReview, createReviewHandler);
 router.put(
   "/:id",
   protectRoute,
   authorizeOwnership,
   validateIdParam(),
+  validateUpdateReview,
   updateReviewHandler
 );
 router.delete(
