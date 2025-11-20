@@ -7,6 +7,7 @@ import userRoutes from "./routes/userRoutes.js";
 import recipeCategoryRoutes from "./routes/recipeCategoryRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 import recipeRoutes from "./routes/recipeRoutes.js";
+import { generalLimiter } from "./middleware/rateLimiter.js";
 
 import cookieParser from "cookie-parser";
 const app = express();
@@ -17,10 +18,12 @@ if (process.env.NODE_ENV === "development") {
   const morgan = morganModule.default;
   app.use(morgan("tiny"));
 }
- 
+
 app.use(express.json());
 app.use(cookieParser());
 /* Inlcude routes here */
+
+app.use(generalLimiter);
 
 app.use("/users", userRoutes);
 app.use("/recipeCategories", recipeCategoryRoutes);
