@@ -8,7 +8,10 @@ import recipeCategoryRoutes from "./routes/recipeCategoryRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 import recipeRoutes from "./routes/recipeRoutes.js";
 
-import cookieParser from "cookie-parser";
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
+
+import cookieParser from 'cookie-parser';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -27,6 +30,8 @@ app.use("/recipeCategories", recipeCategoryRoutes);
 app.use("/reviews", reviewRoutes);
 app.use("/recipes", recipeRoutes);
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(YAML.load('./api-docs/swagger.yaml')));
+
 /* Basic error handling*/
 app.use((req, res, next) => {
   const err = new Error("Route Not Found");
@@ -43,4 +48,8 @@ app.use((err, req, res, next) => {
   res.status(err.status).json({ error: err.message });
 });
 /* Start server */
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`)
+    console.log(`API-DOCS are located at <base-url>:${PORT}/api-docs`)
+    }
+);

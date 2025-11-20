@@ -93,7 +93,7 @@ export async function deleteRecipe(id) {
     return await remove(intId);
 }
 
-export async function updateRecipe(title, description, ingredients, steps, notes, user, id) {4
+export async function updateRecipe(title, description, ingredients, steps, notes, user, id) {
     
     if (!(title || description || ingredients || steps || notes)){
         return {error: "At least one field is required"};

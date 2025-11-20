@@ -13,12 +13,13 @@ import {
 
 const router = express.Router();
 
+router.use(protectRoute);
 
 router.get('/', getAllRecipesHandler); // get all recipes
 router.get('/:id', getRecipeByIdHandler) // get recipe by id
 router.get('/:id/reviews', getRecipeReviewHandler) // get review about a recipe
-router.post('/', protectRoute, createRecipeHandler) // create recipe
-router.delete('/:id', protectRoute, deleteRecipeHandler) // delete recipe
-router.put('/:id', protectRoute, updateRecipeHandler) // update recipe
+router.post('/', createRecipeHandler) // create recipe
+router.delete('/:id', deleteRecipeHandler) // delete recipe
+router.put('/:id', updateRecipeHandler) // update recipe
 
 export default router;
