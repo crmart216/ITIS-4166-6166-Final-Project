@@ -1,12 +1,12 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
-import express from 'express';
+import express from "express";
 
-import userRoutes from './routes/userRoutes.js';
-import recipeCategoryRoutes from './routes/recipeCategoryRoutes.js';
-import reviewRoutes from './routes/reviewRoutes.js';
-import recipeRoutes from './routes/recipeRoutes.js';
+import userRoutes from "./routes/userRoutes.js";
+import recipeCategoryRoutes from "./routes/recipeCategoryRoutes.js";
+import reviewRoutes from "./routes/reviewRoutes.js";
+import recipeRoutes from "./routes/recipeRoutes.js";
 
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
@@ -15,37 +15,37 @@ import cookieParser from 'cookie-parser';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-if(process.env.NODE_ENV === 'development') {
-    const morganModule = await import('morgan');
-    const morgan = morganModule.default;
-    app.use(morgan('tiny'));
+if (process.env.NODE_ENV === "development") {
+  const morganModule = await import("morgan");
+  const morgan = morganModule.default;
+  app.use(morgan("tiny"));
 }
-
+ 
 app.use(express.json());
 app.use(cookieParser());
 /* Inlcude routes here */
 
-app.use('/users', userRoutes);
-app.use('/recipeCategories', recipeCategoryRoutes);
-app.use('/reviews', reviewRoutes);
-app.use('/recipes', recipeRoutes);
+app.use("/users", userRoutes);
+app.use("/recipeCategories", recipeCategoryRoutes);
+app.use("/reviews", reviewRoutes);
+app.use("/recipes", recipeRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(YAML.load('./api-docs/swagger.yaml')));
 
 /* Basic error handling*/
 app.use((req, res, next) => {
-    const err = new Error('Route Not Found');
-    err.status = 404;
-    next(err);
+  const err = new Error("Route Not Found");
+  err.status = 404;
+  next(err);
 });
 
 app.use((err, req, res, next) => {
-    console.log(err.stack);
-    if(!err.status) {
-        err.status = 500;
-        err.message = 'Internal Server Error';
-    }
-    res.status(err.status).json({error: err.message});
+  console.log(err.stack);
+  if (!err.status) {
+    err.status = 500;
+    err.message = "Internal Server Error";
+  }
+  res.status(err.status).json({ error: err.message });
 });
 /* Start server */
 app.listen(PORT, () => {
