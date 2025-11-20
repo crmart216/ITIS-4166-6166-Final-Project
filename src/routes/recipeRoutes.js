@@ -31,6 +31,12 @@ router.delete(
   validateIdParam(),
   deleteRecipeHandler
 ); // delete recipe
-router.put("/:id", protectRoute, authorizeOwnership, updateRecipeHandler); // update recipe
+router.put(
+  "/:id",
+  protectRoute,
+  authorizeOwnership,
+  validateIdParam(),
+  updateRecipeHandler
+); // update recipe
 
 export default router;
