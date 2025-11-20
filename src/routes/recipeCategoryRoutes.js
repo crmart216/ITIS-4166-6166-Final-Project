@@ -15,7 +15,7 @@ import {
 const router = express.Router();
 
 router.get("/", fetchAllCategories);
-router.get("/:id", validateIdParam, fetchCategoryById);
+router.get("/:id", protectRoute, validateIdParam(), fetchCategoryById);
 
 router.post("/", protectRoute, createRecipeCategoryHandler);
 
@@ -23,7 +23,7 @@ router.put(
   "/:id",
   protectRoute,
   authorizeRoles("ADMIN"),
-  validateIdParam,
+  validateIdParam(),
   updateRecipeCategoryHandler
 );
 
@@ -31,7 +31,7 @@ router.delete(
   "/:id",
   protectRoute,
   authorizeRoles("ADMIN"),
-  validateIdParam,
+  validateIdParam(),
   deleteRecipeCategoryHandler
 );
 
