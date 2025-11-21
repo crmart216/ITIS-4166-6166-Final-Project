@@ -28,6 +28,7 @@
     "express-validator": "^7.3.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.16.3",
+    "swagger": "^0.7.5",
     "swagger-ui-express": "^5.0.1",
     "yamljs": "^0.3.0"
   },

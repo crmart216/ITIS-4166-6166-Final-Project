@@ -160,7 +160,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Tyler\\Downloads\\ITIS-4166-6166-Final-Project\\src\\generated\\prisma",
+      "value": "D:\\Coding Projects\\school\\itis4166\\final\\ITIS-4166-6166-Final-Project\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -174,7 +174,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\Tyler\\Downloads\\ITIS-4166-6166-Final-Project\\prisma\\schema.prisma",
+    "sourceFilePath": "D:\\Coding Projects\\school\\itis4166\\final\\ITIS-4166-6166-Final-Project\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
