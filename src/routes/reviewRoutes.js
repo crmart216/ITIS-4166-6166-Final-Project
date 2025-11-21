@@ -24,16 +24,16 @@ router.post("/", protectRoute, validateCreateReview, createReviewHandler);
 router.put(
   "/:id",
   protectRoute,
-  authorizeOwnership("review"),
   validateIdParam(),
+  authorizeOwnership("review"),
   validateUpdateReview,
   updateReviewHandler
 );
 router.delete(
   "/:id",
   protectRoute,
-  authorizeOwnership("review"),
   validateIdParam(),
+  authorizeOwnership("review"),
   deletePostHandler
 );
 export default router;

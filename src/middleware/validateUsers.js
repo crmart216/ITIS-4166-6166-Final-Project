@@ -24,8 +24,10 @@ export const validateUpdateUserRole = [
   body("role")
     .exists({ values: "falsy" })
     .withMessage("Role is required")
+    .bail()
     .isIn(["USER", "ADMIN"])
-    .withMessage("Invalid role"),
+    .withMessage("Invalid role")
+    .bail(),
   handleValidationErrors,
 ];
 

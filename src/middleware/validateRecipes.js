@@ -6,14 +6,15 @@ export const validateCreateRecipe = [
   body("title")
     .exists({ values: "falsy" })
     .withMessage("Title is required")
+    .bail()
     .isString()
     .trim()
     .isLength({ min: 3 })
-    .withMessage("Title must be at least 3 characters long"),
+    .withMessage("Title must be at least 3 characters long")
+    .bail(),
 
   body("category_id")
-    .exists({ values: "falsy" })
-    .withMessage("Category ID is required")
+    .optional()
     .isInt({ min: 1 })
     .withMessage("Category ID must be a positive integer"),
 
@@ -21,10 +22,12 @@ export const validateCreateRecipe = [
   body("steps")
     .exists({ values: "falsy" })
     .withMessage("Steps are required")
+    .bail()
     .isString(),
   body("ingredients")
     .exists({ values: "falsy" })
     .withMessage("Ingredients are required")
+    .bail()
     .isString(),
   body("notes").optional().isString().trim(),
 
@@ -46,7 +49,7 @@ export const validateUpdateRecipe = [
     }
   ),
 
-  body("title").optional().isString().trim().isLength({ min: 3 }),
+  body("title").optional().isString().trim().isLength({ min: 3 }).withMessage("Title must be at least 3 characters long"),
   body("description").optional().isString().trim(),
   body("steps").optional().isString(),
   body("ingredients").optional().isString(),

@@ -6,6 +6,7 @@ export const getAllRecipeCategories = async () => {
       id: true,
       name: true,
     },
+    orderBy: {id: "asc"},
   });
 };
 

@@ -31,15 +31,15 @@ router.post("/", protectRoute, validateCreateRecipe, createRecipeHandler); // cr
 router.delete(
   "/:id",
   protectRoute,
-  authorizeOwnership("recipe"),
   validateIdParam(),
+  authorizeOwnership("recipe"),
   deleteRecipeHandler
 ); // delete recipe
 router.put(
   "/:id",
   protectRoute,
-  authorizeOwnership("recipe"),
   validateIdParam(),
+  authorizeOwnership("recipe"),
   validateUpdateRecipe,
   updateRecipeHandler
 ); // update recipe
