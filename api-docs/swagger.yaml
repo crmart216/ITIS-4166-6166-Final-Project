@@ -13,6 +13,7 @@ tags:
     description: Operations related to recipes
 
 paths:
+  #RECIPE ROUTES
   /recipes:
     get:
       tags: [Recipes]
@@ -79,10 +80,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/UserErrorResponse"
               example:
                 error: "A recipe with this name already exists"
-
+  
   /recipes/{id}:
     get:
       tags: [Recipes]
@@ -109,7 +110,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/RecipeErrorResponse"
               examples:
                 missingId:
                   summary: Missing ID
@@ -124,7 +125,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/RecipeErrorResponse"
               example:
                 error: "Recipe not found"
 
@@ -159,7 +160,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/RecipeErrorResponse"
               examples:
                 noFields:
                   summary: No fields provided
@@ -180,7 +181,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/RecipeErrorResponse"
               example:
                 error: "Recipe not found"
 
@@ -205,7 +206,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/RecipeErrorResponse"
               examples:
                 missingId:
                   summary: Missing ID
@@ -222,7 +223,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/RecipeErrorResponse"
               example:
                 error: "Recipe not found"
 
@@ -248,13 +249,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Review"
+                  $ref: "#/components/schemas/RecipeReview"
         "400":
           description: Invalid ID
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/RecipeErrorResponse"
               examples:
                 missingId:
                   summary: Missing ID
@@ -269,10 +270,739 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: "#/components/schemas/RecipeErrorResponse"
               example:
                 error: "No reviews to display"
+  #USER ROUTES
+  /users:
+    get:
+      summary: Get all users
+      description: Returns a list of all users. Admin only.
+      tags:
+        - Users
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PermissionErrorResponse"
 
+  /users/me:
+    get:
+      summary: Get current user
+      description: Returns the currently authenticated user based on the JWT cookie.
+      tags:
+        - Users
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserErrorResponse"
+    put:
+      summary: Update current user
+      description: Update the authenticated user's email and/or password.
+      tags:
+        - Users
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateMeRequest"
+      responses:
+        "200":
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: No fields provided or validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidIDErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserErrorResponse"
+        "409":
+          description: Email already in use
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmailInUseErrorResponse"
+    delete:
+      summary: Delete current user
+      description: Delete the authenticated user's account.
+      tags:
+        - Users
+      security:
+        - cookieAuth: []
+      responses:
+        "204":
+          description: User deleted successfully
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserErrorResponse"
+  
+  /users/{id}/recipes:
+    get:
+      summary: Get recipes for a user
+      description: Returns a list of recipes authored by the specified user.
+      tags:
+        - Users
+        - Recipes
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the user
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RecipeSummary"
+        "400":
+          description: Invalid ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidIDErrorResponse"
+              examples:
+                missingId:
+                  summary: Missing ID
+                  value:
+                    error: "id is required"
+                invalidId:
+                  summary: Non-integer ID
+                  value:
+                    error: "id must be an integer"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserErrorResponse"
+
+  /users/{id}/role:
+    patch:
+      summary: Update another user's role
+      description: Update the role of another user. Admin only.
+      tags:
+        - Users
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the user to update
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateOtherUserRoleRequest"
+      responses:
+        "200":
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Invalid ID or body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidIDErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PermissionErrorResponse"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserNotFoundErrorResponse"
+
+  /users/{id}:
+    delete:
+      summary: Delete another user
+      description: Delete a user by ID. Admin only.
+      tags:
+        - Users
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the user to delete
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: User deleted successfully
+        "400":
+          description: Invalid ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidIDErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PermissionErrorResponse"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserNotFoundErrorResponse"
+
+  /users/login:
+    post:
+      summary: Login
+      description: Authenticate a user with email and password. Returns user info and sets a JWT cookie.
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserLoginRequest"
+      responses:
+        "200":
+          description: Successful login
+          headers:
+            Set-Cookie:
+              description: HTTP-only JWT cookie
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserLoginResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAuthErrorResponse"
+
+  /users/signup:
+    post:
+      summary: Sign up
+      description: Register a new user and set a JWT cookie.
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAuthSignUpRequest"
+      responses:
+        "200":
+          description: New user created
+          headers:
+            Set-Cookie:
+              description: HTTP-only JWT cookie
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserSignUpResponse"
+        "409":
+          description: Email already in use
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmailInUseErrorResponse"
+
+  /users/logout:
+    post:
+      summary: Logout
+      description: Clear the JWT cookie to log out the user.
+      tags:
+        - Auth
+      responses:
+        "200":
+          description: Logged out successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Logged out successfully
+
+  # REVIEWS
+  /reviews:
+    get:
+      summary: Get all reviews
+      description: |
+        Returns a list of all reviews.
+        Requires authentication via JWT cookie.
+      tags:
+        - Reviews
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: List of reviews
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Review"
+        "401":
+          description: Unauthorized (no or invalid token)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAuthErrorResponse"
+    
+    post:
+      summary: Create a review
+      description: |
+        Create a new review for a recipe.
+        The authenticated user is used as the review author.
+      tags:
+        - Reviews
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewCreateRequest"
+      responses:
+        "201":
+          description: Review created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+        "400":
+          description: Validation error (e.g. missing content or recipe_id)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidIDErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAuthErrorResponse"
+        "404":
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecipeErrorResponse"
+              example:
+                error: "Recipe not found"
+
+  /reviews/{id}:
+    get:
+      summary: Get review by ID
+      description: Get a single review by its ID.
+      tags:
+        - Reviews
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the review
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Review found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+        "400":
+          description: Invalid ID parameter (must be positive integer)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidIDErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAuthErrorResponse"
+        "404":
+          description: Review not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReviewErrorResponse"
+
+    put:
+      summary: Update a review
+      description: |
+        Update the content of a review.
+        Only the review owner or an admin can perform this action.
+      tags:
+        - Reviews
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the review to update
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewUpdateRequest"
+      responses:
+        "200":
+          description: Updated review
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+        "400":
+          description: Invalid ID or body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidIDErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAuthErrorResponse"
+        "403":
+          description: Forbidden (not owner and not admin)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PermissionErrorResponse"
+        "404":
+          description: Review not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReviewErrorResponse"
+
+    delete:
+      summary: Delete a review
+      description: |
+        Delete a review by its ID.
+        Only the review owner or an admin can perform this action.
+      tags:
+        - Reviews
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the review to delete
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Review deleted successfully
+        "400":
+          description: Invalid ID parameter
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidIDErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAuthErrorResponse"
+        "403":
+          description: Forbidden (not owner and not admin)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PermissionErrorResponse"
+        "404":
+          description: Review not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReviewErrorResponse"
+#CATEGORIES
+
+  /recipeCategories:
+    get:
+      summary: Get all recipe categories
+      description: Returns a list of all recipe categories. Public endpoint.
+      tags:
+        - RecipeCategories
+      responses:
+        "200":
+          description: List of recipe categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RecipeCategory"
+
+    post:
+      summary: Create a recipe category
+      description: |
+        Create a new recipe category. Requires authentication.
+      tags:
+        - RecipeCategories
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecipeCategoryCreateRequest"
+      responses:
+        "201":
+          description: Recipe category created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecipeCategory"
+        "400":
+          description: Validation error (e.g. missing name)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidIDErrorResponse"
+        "401":
+          description: Unauthorized (no or invalid token)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryNotFoundErrorResponse"
+
+  /recipeCategories/{id}:
+    get:
+      summary: Get recipe category by ID
+      description: |
+        Get a single recipe category by its ID.
+        Requires authentication.
+      tags:
+        - RecipeCategories
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the category
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Category found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecipeCategory"
+        "400":
+          description: Invalid ID parameter (must be positive integer)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidIDErrorResponse"
+        "401":
+          description: Unauthorized (no or invalid token)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAuthErrorResponse"
+        "404":
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryNotFoundErrorResponse"
+
+    put:
+      summary: Update a recipe category
+      description: |
+        Update the name of a recipe category.
+        Only ADMIN users can perform this action.
+      tags:
+        - RecipeCategories
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the category to update
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecipeCategoryUpdateRequest"
+      responses:
+        "200":
+          description: Updated recipe category
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecipeCategory"
+        "400":
+          description: Invalid ID or body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidIDErrorResponse"
+        "401":
+          description: Unauthorized (no or invalid token)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAuthErrorResponse"
+        "403":
+          description: Forbidden (user is not ADMIN)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PermissionErrorResponse"
+        "404":
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryNotFoundErrorResponse"
+
+    delete:
+      summary: Delete a recipe category
+      description: |
+        Delete a recipe category by its ID.
+        Only ADMIN users can perform this action.
+      tags:
+        - RecipeCategories
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the category to delete
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Category deleted successfully
+        "400":
+          description: Invalid ID parameter
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidIDErrorResponse"
+        "401":
+          description: Unauthorized (no or invalid token)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAuthErrorResponse"
+        "403":
+          description: Forbidden (user is not ADMIN)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PermissionErrorResponse"
+        "404":
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryNotFoundErrorResponse"
 components:
   securitySchemes:
     cookieAuth:
@@ -343,12 +1073,211 @@ components:
         notes:
           type: string
 
-    Review:
+    RecipeReview:
       type: object
       description: Review object as returned by the database.
       additionalProperties: true
 
-    ErrorResponse:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        role:
+          type: string
+          example: USER
+      required:
+        - id
+        - email
+        - role
+
+    UserLoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        password:
+          type: string
+          format: password
+          example: password123
+      required:
+        - email
+        - password
+
+    UserLoginResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        role:
+          type: string
+          example: USER
+      required:
+        - id
+        - email
+        - role
+
+    UserSignUpRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: newuser@example.com
+        password:
+          type: string
+          format: password
+          example: password123
+      required:
+        - email
+        - password
+
+    UserSignUpResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: New User Created
+        id:
+          type: integer
+          example: 2
+        email:
+          type: string
+          format: email
+          example: newuser@example.com
+        role:
+          type: string
+          example: USER
+      required:
+        - message
+        - id
+        - email
+        - role
+
+    UpdateMeRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: updated@example.com
+        password:
+          type: string
+          format: password
+          example: newPassword123
+
+    UpdateOtherUserRoleRequest:
+      type: object
+      properties:
+        role:
+          type: string
+          example: ADMIN
+      required:
+        - role
+
+    RecipeSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+        title:
+          type: string
+          example: Classic Lasagna
+      required:
+        - id
+        - title
+
+    Review:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        content:
+          type: string
+          example: "This recipe was amazing, will make again!"
+        author_id:
+          type: integer
+          example: 3
+        recipe_id:
+          type: integer
+          example: 10
+      required:
+        - id
+        - content
+        - author_id
+        - recipe_id
+
+    ReviewCreateRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          example: "Loved this recipe, very easy to follow."
+        recipe_id:
+          type: integer
+          example: 10
+      required:
+        - content
+        - recipe_id
+
+    ReviewUpdateRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          example: "Updated review: tried it again and still great."
+
+    RecipeCategory:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Dessert"
+      required:
+        - id
+        - name
+
+    RecipeCategoryCreateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Dessert"
+      required:
+        - name
+
+    RecipeCategoryUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Updated Category Name"
+
+    ReviewErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Cannot find review with id 1"
+
+    RecipeErrorResponse:
       type: object
       properties:
         error:
@@ -356,11 +1285,60 @@ components:
       required:
         - error
 
+    UserErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Invalid Token
+
+    UserAuthErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Invalid credentials
+    
+    UserNotFoundErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: User not found
+
+    PermissionErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Forbidden: insufficient permission"
+
+    EmailInUseErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Email already in use"
+
+    InvalidIDErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Invalid ID"
+
     ErrorResponseWithExample:
       allOf:
-        - $ref: "#/components/schemas/ErrorResponse"
+        - $ref: "#/components/schemas/RecipeErrorResponse"
         - type: object
           properties:
             example:
               type: object
               description: Example payload showing correct request format.
+
+    CategoryNotFoundErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Category not found"

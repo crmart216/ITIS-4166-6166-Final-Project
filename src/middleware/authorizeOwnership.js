@@ -4,7 +4,7 @@ export function authorizeOwnership(resource) {
   return async (req, res, next) => {
     try {
       const id = parseInt(req.params.id, 10);
-
+      
       // 1. Fetch the resource
       const record = await prisma[resource].findUnique({
         where: { id },
