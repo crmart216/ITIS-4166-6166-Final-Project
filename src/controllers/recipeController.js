@@ -39,7 +39,7 @@ export async function getRecipeReviewHandler(req, res) {
     } 
     res.status(200).json(review);
 }
-//TODO: Update for categories once that part is done
+
 export async function createRecipeHandler(req, res) {
     try {
         const {title, description, ingredients, steps, notes} = req.body;
@@ -63,7 +63,6 @@ export async function createRecipeHandler(req, res) {
 
 export async function deleteRecipeHandler(req, res) {
     try {
-        const id = req.params.id;
         const result = await deleteRecipe(id);
         if (result && result.error) {
             res.status(400).json(result);
