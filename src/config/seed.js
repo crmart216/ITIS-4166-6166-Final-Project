@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import prisma from './db.js';
 
 try {
-
+    
     await prisma.user.deleteMany();
     await prisma.recipe.deleteMany();
     await prisma.recipe_Category.deleteMany();

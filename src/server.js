@@ -24,9 +24,12 @@ if (process.env.NODE_ENV === "development") {
 
 app.use(express.json());
 app.use(cookieParser());
-/* Inlcude routes here */
 
 app.use(generalLimiter);
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
 
 app.use("/users", userRoutes);
 app.use("/recipeCategories", recipeCategoryRoutes);
