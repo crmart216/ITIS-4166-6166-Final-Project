@@ -28,6 +28,10 @@ app.use(cookieParser());
 
 app.use(generalLimiter);
 
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
 app.use("/users", userRoutes);
 app.use("/recipeCategories", recipeCategoryRoutes);
 app.use("/reviews", reviewRoutes);
