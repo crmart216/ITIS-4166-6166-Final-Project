@@ -5,6 +5,8 @@ info:
   description: API for managing recipes and their reviews.
 
 servers:
+  - url: https://itis-4166-6166-final-project-oh8g.onrender.com/
+    description: Cloud deployment
   - url: http://localhost:3000
     description: Local development
 
@@ -565,7 +567,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserAuthSignUpRequest"
+              $ref: "#/components/schemas/UserSignUpRequest"
       responses:
         "200":
           description: New user created
@@ -578,6 +580,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserSignUpResponse"
+        "400":
+          description: Email and Passsword is Required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmailPasswordErrorResponse"
         "409":
           description: Email already in use
           content:
@@ -628,7 +636,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserAuthErrorResponse"
+                $ref: "#/components/schemas/UserErrorResponse"
     
     post:
       summary: Create a review
@@ -657,13 +665,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidIDErrorResponse"
+                $ref: "#/components/schemas/InvalidReviewErrorResponse"
         "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserAuthErrorResponse"
+                $ref: "#/components/schemas/UserErrorResponse"
         "404":
           description: Recipe not found
           content:
@@ -706,7 +714,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserAuthErrorResponse"
+                $ref: "#/components/schemas/UserErrorResponse"
         "404":
           description: Review not found
           content:
@@ -819,6 +827,8 @@ paths:
       description: Returns a list of all recipe categories. Public endpoint.
       tags:
         - RecipeCategories
+      security: 
+        - CookieAuth: []
       responses:
         "200":
           description: List of recipe categories
@@ -827,7 +837,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/RecipeCategory"
+                  $ref: "#/components/schemas/RecipeCategory" 
+        "401":
+          description: Unauthorized (no or invalid token)
+          content: 
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserErrorResponse"
 
     post:
       summary: Create a recipe category
@@ -855,13 +871,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidIDErrorResponse"
+                $ref: "#/components/schemas/InvalidReviewErrorResponse"
         "401":
           description: Unauthorized (no or invalid token)
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CategoryNotFoundErrorResponse"
+                $ref: "#/components/schemas/UserErrorResponse"
 
   /recipeCategories/{id}:
     get:
@@ -1270,6 +1286,13 @@ components:
           type: string
           example: "Updated Category Name"
 
+    EmailPasswordErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string 
+          example: "Email and Password are required"
+
     ReviewErrorResponse:
       type: object
       properties:
@@ -1299,6 +1322,14 @@ components:
           type: string
           example: Invalid credentials
     
+    InvalidReviewErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: [Review Content is required, recipe ID is required]
+
+
     UserNotFoundErrorResponse:
       type: object
       properties:
