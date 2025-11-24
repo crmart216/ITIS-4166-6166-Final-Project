@@ -6,16 +6,20 @@ export const validateCreateReview = [
   body("content")
     .exists({ values: "falsy" })
     .withMessage("Review content is required")
+    .bail()
     .isString()
     .trim()
     .isLength({ min: 3 })
-    .withMessage("Review must be at least 3 characters long"),
+    .withMessage("Review must be at least 3 characters long")
+    .bail(),
 
   body("recipe_id")
     .exists({ values: "falsy" })
     .withMessage("Recipe ID is required")
+    .bail()
     .isInt({ min: 1 })
-    .withMessage("Recipe ID must be a positive integer"),
+    .withMessage("Recipe ID must be a positive integer")
+    .bail(),
 
   handleValidationErrors,
 ];
@@ -24,6 +28,6 @@ export const validateUpdateReview = [
   oneOf([body("content").exists({ values: "falsy" })], {
     message: "At least one field (content) must be provided",
   }),
-  body("content").optional().isString().trim().isLength({ min: 3 }),
+  body("content").optional().isString().trim().isLength({ min: 3 }).withMessage("Review must be at least 3 characters long"),
   handleValidationErrors,
 ];

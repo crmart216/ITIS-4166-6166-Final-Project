@@ -61,7 +61,7 @@ export async function createRecipeHandler(req, res) {
     
 }
 
-export async function deleteRecipeHandler(req, res, next) {
+export async function deleteRecipeHandler(req, res) {
     try {
         const result = await deleteRecipe(id);
         if (result && result.error) {
