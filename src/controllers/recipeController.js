@@ -63,6 +63,7 @@ export async function createRecipeHandler(req, res) {
 
 export async function deleteRecipeHandler(req, res, next) {
     try {
+        const id = req.params.id;
         const result = await deleteRecipe(id);
         if (result && result.error) {
             res.status(400).json(result);
