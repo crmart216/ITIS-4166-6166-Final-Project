@@ -18,7 +18,7 @@ import {
 
 const router = express.Router();
 
-router.get("/", fetchAllCategories);
+router.get("/", protectRoute, fetchAllCategories);
 router.get("/:id", protectRoute, validateIdParam(), fetchCategoryById);
 
 router.post(

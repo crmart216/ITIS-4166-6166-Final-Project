@@ -11,7 +11,12 @@ export const fetchAllCategories = async (req, res) => {
     const categories = await service.getCategories();
     return res.json(categories);
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+      if (err.code === "P2002") {
+          res.status(404).json({ error: "A recipe category with this name already exists"})
+          return;
+      } else {
+          throw new Error(err);
+      }
   }
 };
 
@@ -32,8 +37,18 @@ export async function createRecipeCategoryHandler(req, res) {
   const data = {
     name: req.body.name,
   };
-  let newRecipeCategory = await createRecipeCategory(data);
-  res.status(201).json(newRecipeCategory);
+  try{
+    let newRecipeCategory = await createRecipeCategory(data);
+    res.status(201).json(newRecipeCategory);
+  } catch (err) {
+      if (err.code === "P2002") {
+          res.status(404).json({ error: "A recipe with this name already exists"})
+          return;
+      } else {
+          throw new Error(err);
+      }
+  }
+
 }
 
 export async function updateRecipeCategoryHandler(req, res) {
